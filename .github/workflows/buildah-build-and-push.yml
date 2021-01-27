@@ -13,12 +13,14 @@ jobs:
         uses: redhat-actions/buildah-build@v1
         with:
           image: ${{ github.event.repository.name }}
+          tag: ${{ github.event.ref }}
           dockerfiles: ./Dockerfile
 
-      - name: Build and Push Github Registry
+      - name: Push Github Registry
         uses: redhat-actions/push-to-registry@v1
         with:
           image: ${{ github.event.repository.name }}
+          tag: ${{ github.event.ref }}
           registry: ghcr.io
-          username: fabioluciano
+          username: integr8
           password: ${{ secrets.REGISTRY_TOKEN }}
