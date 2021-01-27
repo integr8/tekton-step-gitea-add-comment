@@ -1,0 +1,15 @@
+name: Build Image using Dockerfile
+on: [push]
+
+jobs:
+  build:
+    name: Build image
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Buildah Action
+        uses: redhat-actions/buildah-build@v1
+        with:
+          image: ${{ github.event.repository.name }}
