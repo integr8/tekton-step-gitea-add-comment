@@ -13,3 +13,4 @@ jobs:
         uses: redhat-actions/buildah-build@v1
         with:
           image: ${{ github.event.repository.name }}
+          dockerfiles: ./Dockerfile
