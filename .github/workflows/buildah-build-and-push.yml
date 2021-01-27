@@ -9,18 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Buildah Action
-        uses: redhat-actions/buildah-build@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
-          image: ${{ github.event.repository.name }}
-          tag: ${{ github.event.ref }}
-          dockerfiles: ./Dockerfile
-
-      - name: Push Github Registry
-        uses: redhat-actions/push-to-registry@v1
-        with:
-          image: ${{ github.event.repository.name }}
-          tag: ${{ github.event.ref }}
           registry: ghcr.io
-          username: integr8
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ github.ref }}
+            ghcr.io/${{ github.repository }}:latest
