@@ -42,7 +42,8 @@ data = {
 }
 
 try:
-    request = requests.post(comment_api_url, json=data, headers=headers)
+    request = requests.post(comment_api_url, json=data,
+                            headers=headers, verify=ignore_selfsigned_cert)
     request.raise_for_status()
 except requests.exceptions.RequestException as e:
     print(e)
