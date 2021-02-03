@@ -1,13 +1,14 @@
 import requests
 import os
 from urllib.parse import ParseResultBytes, urlparse
+from distutils.util import strtobool
 
 from requests import api
 
 """
 GITEA_HOST_URL:
 GITEA_API_PATH_PREFIX:
-IGNORE_SELFSIGNED_CERT:
+VERIFY_SELFSIGNED_CERT:
 REQUEST_URL:
 GITEA_TOKEN:
 COMMENT_FILE_NAME
@@ -18,7 +19,8 @@ gitea_host_url = os.environ.get('GITEA_HOST_URL')
 gitea_api_path_prefix = os.environ.get('GITEA_API_PATH_PREFIX')
 gitea_token = os.environ.get('GITEA_TOKEN')
 
-ignore_selfsigned_cert = os.environ.get('IGNORE_SELFSIGNED_CERT')
+verify_selfsigned_cert = bool(
+    strtobool(os.environ.get('VERIFY_SELFSIGNED_CERT')))
 request_url = os.environ.get('REQUEST_URL')
 api_path_prefix = os.environ.get('GITEA_API_PATH_PREFIX')
 comment = os.environ.get('COMMENT')
@@ -44,7 +46,7 @@ data = {
 
 try:
     request = requests.post(comment_api_url, json=data,
-                            headers=headers, verify=False)
+                            headers=headers, verify=verify_selfsigned_cert)
     request.raise_for_status()
 except requests.exceptions.RequestException as e:
     print(e)
