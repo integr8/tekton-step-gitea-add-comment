@@ -30,7 +30,8 @@ if not gitea_host_url or not gitea_api_path_prefix:
 else:
     api_root_path = f"{gitea_host_url}{gitea_api_path_prefix}"
 
-comment_api_url = f"{api_root_path}/repos{request_url_parse.path.replace('pulls','issues')}/comments"
+request_url_parse_path = request_url_parse.path.replace('pulls', 'issues')
+comment_api_url = f"{api_root_path}/repos{request_url_parse_path}/comments"
 
 headers = {
     "User-Agent": "TektonCD, the peaceful cat",
@@ -43,7 +44,7 @@ data = {
 
 try:
     request = requests.post(comment_api_url, json=data,
-                            headers=headers, verify=ignore_selfsigned_cert)
+                            headers=headers, verify=False)
     request.raise_for_status()
 except requests.exceptions.RequestException as e:
     print(e)
